@@ -1,141 +1,48 @@
-import java.util.LinkedList;
-import java.util.Queue;
+class Main {
+    public static void main(String[] args) {
+        BinarySearchTree bst = new BinarySearchTree();
 
-class TreeNode {
-    int key;
-    TreeNode left, right;
+        bst.insert(6);
+        bst.insert(7);
+        bst.insert(12);
+        bst.insert(2);
+        bst.insert(5);
+        bst.insert(10);
 
-    public TreeNode(int item) {
-        key = item;
-        left = right = null;
+        bst.preorder();
+        bst.inorder();
+        bst.postorder();
     }
 }
 
-public class BinarySearchTree {
-
+class BinarySearchTree {
     TreeNode root;
 
     public BinarySearchTree() {
         root = null;
     }
 
-    // insertion
-    public void insert(TreeNode root, int key) {
-        root = insertRec(root, key);
+    public void insert(int data) {
+        root = insertRec(root, data);
     }
 
     public TreeNode insertRec(TreeNode root, int key) {
-
         if (root == null) {
             root = new TreeNode(key);
             return root;
         }
 
-        if (key < root.key) {
-            root.left = insertRec(root.left, key);
-        } else if (key > root.key) {
-            root.right = insertRec(root.right, key);
-        }
-
-        return root;
-    }
-
-    // deletion
-    public void delete(TreeNode root, int key) {
-        root = deleteLeafNode(root, key);
-        root = deleteNodeWithOneChild(root, key);
-        root = deleteNodeWithTwoChild(root, key);
-    }
-
-    public TreeNode deleteLeafNode(TreeNode root, int key) {
-
-        if (root == null)
-            return null;
-
-        if (key < root.key) {
-            root.left = deleteLeafNode(root.left, key);
-        } else if (key > root.key) {
-            root.right = deleteLeafNode(root.right, key);
-        } else {
-            root = null;
-        }
-
-        return root;
-    }
-
-    public TreeNode deleteNodeWithOneChild(TreeNode root, int key) {
-
-        if (root == null)
-            return null;
-
-        if (key < root.key) {
-            root.left = deleteLeafNode(root.left, key);
-        } else if (key > root.key) {
-            root.right = deleteLeafNode(root.right, key);
-        } else {
-            if (root.left == null)
-                return root.right;
-            else if (root.right == null)
-                return root.left;
-        }
-
-        return root;
-    }
-
-    public TreeNode deleteNodeWithTwoChild(TreeNode root, int key) {
-
-        if (root == null)
-            return null;
-
-        if (key < root.key) {
-            root.left = deleteNodeWithTwoChild(root.left, key);
-        } else if (key > root.key) {
-            root.right = deleteNodeWithTwoChild(root.right, key);
-        } else {
-            TreeNode successor = findSuccessor(root.right);
-            root.key = successor.key;
-            root.right = deleteNodeWithOneChild(root.right, successor.key);
-        }
-        return root;
-    }
-
-    public TreeNode findSuccessor(TreeNode root) {
-        while (root.left != null) {
-            root = root.left;
-        }
-
-        return root;
-    }
-
-    public TreeNode findPredecessor(TreeNode root) {
-        while (root.right != null) {
-            root = root.right;
-        }
-
-        return root;
-    }
-
-    // search
-    public TreeNode search(TreeNode root, int key) {
-        return searchRec(root, key);
-    }
-
-    public TreeNode searchRec(TreeNode root, int key) {
-
-        if (root == null || key == root.key)
-            return root;
-
         if (key < root.key)
-            return searchRec(root.left, key);
+            root.left = insertRec(root.left, key);
+        else if (key > root.key)
+            root.right = insertRec(root.right, key);
 
-        return searchRec(root.right, key);
+        return root;
     }
 
-    // traversal
-
-    // pre order travesel
-    public void preorder(TreeNode root) {
+    public void preorder() {
         preorderRec(root);
+        System.out.println();
     }
 
     public void preorderRec(TreeNode root) {
@@ -146,9 +53,9 @@ public class BinarySearchTree {
         }
     }
 
-    // in order travesel
-    public void inorder(TreeNode root) {
+    public void inorder() {
         inorderRec(root);
+        System.out.println();
     }
 
     public void inorderRec(TreeNode root) {
@@ -159,9 +66,9 @@ public class BinarySearchTree {
         }
     }
 
-    // post order travesel
-    public void postorder(TreeNode root) {
+    public void postorder() {
         postorderRec(root);
+        System.out.println();
     }
 
     public void postorderRec(TreeNode root) {
@@ -171,25 +78,14 @@ public class BinarySearchTree {
             System.out.print(root.key + " ");
         }
     }
+}
 
-    // level order travesel
-    public void levelorderRec(TreeNode root) {
-        if (root == null)
-            return;
+class TreeNode {
+    int key;
+    TreeNode left, right;
 
-        Queue<TreeNode> queue = new LinkedList<>();
-        queue.add(root);
-
-        while (!queue.isEmpty()) {
-            TreeNode node = queue.poll();
-            System.out.print(node.key + " ");
-
-            if (node.left != null) {
-                queue.add(node.left);
-            }
-            if (node.right != null) {
-                queue.add(node.right);
-            }
-        }
+    public TreeNode(int data) {
+        key = data;
+        left = right = null;
     }
 }
