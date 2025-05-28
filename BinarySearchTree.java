@@ -1,3 +1,6 @@
+import java.util.LinkedList;
+import java.util.Queue;
+
 class Main {
     public static void main(String[] args) {
         BinarySearchTree bst = new BinarySearchTree();
@@ -9,15 +12,25 @@ class Main {
         bst.insert(5);
         bst.insert(10);
 
+        bst.delete(6);
+
+        if (bst.search(6)) {
+            System.out.println("Node is exist");
+        } else {
+            System.out.println("Node is not exist");
+        }
+
+        System.out.print("Preorder: ");
         bst.preorder();
+
+        System.out.print("Inorder: ");
         bst.inorder();
+
+        System.out.print("Postorder: ");
         bst.postorder();
 
-        bst.delete(10);
-
-        bst.preorder();
-        bst.inorder();
-        bst.postorder();
+        System.out.print("Level Order: ");
+        bst.levelorder();
     }
 }
 
@@ -121,6 +134,47 @@ class BinarySearchTree {
             postorderRec(root.left);
             postorderRec(root.right);
             System.out.print(root.key + " ");
+        }
+    }
+
+    public void levelorder() {
+        if (root == null) {
+            return;
+        }
+
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+
+        while (!queue.isEmpty()) {
+            TreeNode node = queue.poll();
+            System.out.print(node.key + " ");
+
+            if (node.left != null) {
+                queue.add(node.left);
+            }
+            if (node.right != null) {
+                queue.add(node.right);
+            }
+        }
+        System.out.println();
+    }
+
+    public boolean search(int data) {
+        if (searchRec(root, data) == null) {
+            return false;
+        }
+        return true;
+    }
+
+    private TreeNode searchRec(TreeNode root, int key) {
+        if (root == null || root.key == key) {
+            return root;
+        }
+
+        if (key < root.key) {
+            return searchRec(root.left, key);
+        } else {
+            return searchRec(root.right, key);
         }
     }
 }
