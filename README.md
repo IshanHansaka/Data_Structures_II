@@ -1,0 +1,13 @@
+Binary Search Tree
+  - Insertion
+  - Deletion
+      - Leaf Node
+      - Node with One Child
+      - Node with Two Children
+  - DFS Travesel
+      - Pre Order
+      - In Order
+      - Post Order
+  - BFS Travesel
+      - Level Order
+  - Search 
