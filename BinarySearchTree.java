@@ -13,7 +13,7 @@ class Main {
         bst.inorder();
         bst.postorder();
 
-        bst.deleteLeafNode(5);
+        bst.delete(10);
 
         bst.preorder();
         bst.inorder();
@@ -46,64 +46,33 @@ class BinarySearchTree {
         return root;
     }
 
-    public void deleteLeafNode(int data) {
-        root = deleteLeafNodeRec(root, data);
+    public void delete(int data) {
+        root = deleteRec(root, data);
     }
 
-    private TreeNode deleteLeafNodeRec(TreeNode root, int key) {
+    private TreeNode deleteRec(TreeNode root, int key) {
         if (root == null)
             return null;
 
         if (key < root.key) {
-            root.left = deleteLeafNodeRec(root.left, key);
+            root.left = deleteRec(root.left, key);
         } else if (key > root.key) {
-            root.right = deleteLeafNodeRec(root.right, key);
+            root.right = deleteRec(root.right, key);
         } else {
             if (root.left == null && root.right == null) {
-                root = null;
+                return null;
             }
-        }
 
-        return root;
-    }
-
-    public void deleteNodeWithOneChild(int data) {
-        root = deleteNodeWithOneChildRec(root, data);
-    }
-
-    private TreeNode deleteNodeWithOneChildRec(TreeNode root, int key) {
-        if (root == null)
-            return null;
-
-        if (key < root.key) {
-            root.left = deleteNodeWithOneChildRec(root.left, key);
-        } else if (key > root.key) {
-            root.right = deleteNodeWithOneChildRec(root.right, key);
-        } else {
-            if (root.left == null ^ root.right == null) {
-                return (root.left != null) ? root.left : root.right;
+            if (root.left == null) {
+                return root.right;
             }
-        }
+            if (root.right == null) {
+                return root.left;
+            }
 
-        return root;
-    }
-
-    public void deleteNodeWithTwoChildren(int data) {
-        root = deleteNodeWithTwoChildrenRec(root, data);
-    }
-
-    public TreeNode deleteNodeWithTwoChildrenRec(TreeNode root, int key) {
-        if (root == null)
-            return null;
-
-        if (key < root.key) {
-            root.left = deleteNodeWithTwoChildrenRec(root.left, key);
-        } else if (key > root.key) {
-            root.right = deleteNodeWithTwoChildrenRec(root.right, key);
-        } else {
             TreeNode successor = findSuccessor(root.right);
             root.key = successor.key;
-            root.right = deleteNodeWithTwoChildrenRec(root.right, successor.key);
+            root.right = deleteRec(root.right, successor.key);
         }
 
         return root;
