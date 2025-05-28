@@ -41,28 +41,31 @@ class BinarySearchTree {
         root = null;
     }
 
+    // Insert a node into the BST
     public void insert(int data) {
         root = insertRec(root, data);
     }
 
+    // Recursive insert method
     public TreeNode insertRec(TreeNode root, int key) {
         if (root == null) {
-            root = new TreeNode(key);
-            return root;
+            return new TreeNode(key);
         }
 
         if (key < root.key)
-            root.left = insertRec(root.left, key);
+            root.left = insertRec(root.left, key); // Insert in left subtree
         else if (key > root.key)
-            root.right = insertRec(root.right, key);
+            root.right = insertRec(root.right, key); // Insert in right subtree
 
         return root;
     }
 
+    // Delete a node from the BST
     public void delete(int data) {
         root = deleteRec(root, data);
     }
 
+    // Recursive delete method
     private TreeNode deleteRec(TreeNode root, int key) {
         if (root == null)
             return null;
@@ -72,32 +75,37 @@ class BinarySearchTree {
         } else if (key > root.key) {
             root.right = deleteRec(root.right, key);
         } else {
+            // Node with no childrens
             if (root.left == null && root.right == null) {
                 return null;
             }
 
-            if (root.left == null) {
+            // Node with one child
+            if (root.left == null)
                 return root.right;
-            }
-            if (root.right == null) {
+            else if (root.right == null)
                 return root.left;
-            }
 
+            // Node with two children: get the inorder successor (smallest in the right
+            // subtree)
             TreeNode successor = findSuccessor(root.right);
             root.key = successor.key;
-            root.right = deleteRec(root.right, successor.key);
+            root.right = deleteRec(root.right, successor.key); // Delete the inorder successor
         }
 
         return root;
     }
 
+    // Find the minimum node in a subtree (used for deleting a node with two
+    // children)
     private TreeNode findSuccessor(TreeNode root) {
-        if (root.left == null) {
-            return root;
+        while (root.left != null) {
+            root = root.left;
         }
-        return findSuccessor(root.left);
+        return root;
     }
 
+    // Preorder traversal: Root -> Left -> Right
     public void preorder() {
         preorderRec(root);
         System.out.println();
@@ -111,6 +119,7 @@ class BinarySearchTree {
         }
     }
 
+    // Inorder traversal: Left -> Root -> Right (returns sorted order)
     public void inorder() {
         inorderRec(root);
         System.out.println();
@@ -124,6 +133,7 @@ class BinarySearchTree {
         }
     }
 
+    // Postorder traversal: Left -> Right -> Root
     public void postorder() {
         postorderRec(root);
         System.out.println();
@@ -137,6 +147,7 @@ class BinarySearchTree {
         }
     }
 
+    // Level-order traversal: Breadth-first traversal using a queue
     public void levelorder() {
         if (root == null) {
             return;
@@ -159,13 +170,12 @@ class BinarySearchTree {
         System.out.println();
     }
 
+    // Search for a key in the BST
     public boolean search(int data) {
-        if (searchRec(root, data) == null) {
-            return false;
-        }
-        return true;
+        return searchRec(root, data) != null;
     }
 
+    // Recursive search method
     private TreeNode searchRec(TreeNode root, int key) {
         if (root == null || root.key == key) {
             return root;
@@ -179,6 +189,7 @@ class BinarySearchTree {
     }
 }
 
+// TreeNode class representing each node in the BST
 class TreeNode {
     int key;
     TreeNode left, right;
