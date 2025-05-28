@@ -12,6 +12,12 @@ class Main {
         bst.preorder();
         bst.inorder();
         bst.postorder();
+
+        bst.deleteLeafNode(5);
+
+        bst.preorder();
+        bst.inorder();
+        bst.postorder();
     }
 }
 
@@ -38,6 +44,76 @@ class BinarySearchTree {
             root.right = insertRec(root.right, key);
 
         return root;
+    }
+
+    public void deleteLeafNode(int data) {
+        root = deleteLeafNodeRec(root, data);
+    }
+
+    private TreeNode deleteLeafNodeRec(TreeNode root, int key) {
+        if (root == null)
+            return null;
+
+        if (key < root.key) {
+            root.left = deleteLeafNodeRec(root.left, key);
+        } else if (key > root.key) {
+            root.right = deleteLeafNodeRec(root.right, key);
+        } else {
+            if (root.left == null && root.right == null) {
+                root = null;
+            }
+        }
+
+        return root;
+    }
+
+    public void deleteNodeWithOneChild(int data) {
+        root = deleteNodeWithOneChildRec(root, data);
+    }
+
+    private TreeNode deleteNodeWithOneChildRec(TreeNode root, int key) {
+        if (root == null)
+            return null;
+
+        if (key < root.key) {
+            root.left = deleteNodeWithOneChildRec(root.left, key);
+        } else if (key > root.key) {
+            root.right = deleteNodeWithOneChildRec(root.right, key);
+        } else {
+            if (root.left == null ^ root.right == null) {
+                return (root.left != null) ? root.left : root.right;
+            }
+        }
+
+        return root;
+    }
+
+    public void deleteNodeWithTwoChildren(int data) {
+        root = deleteNodeWithTwoChildrenRec(root, data);
+    }
+
+    public TreeNode deleteNodeWithTwoChildrenRec(TreeNode root, int key) {
+        if (root == null)
+            return null;
+
+        if (key < root.key) {
+            root.left = deleteNodeWithTwoChildrenRec(root.left, key);
+        } else if (key > root.key) {
+            root.right = deleteNodeWithTwoChildrenRec(root.right, key);
+        } else {
+            TreeNode successor = findSuccessor(root.right);
+            root.key = successor.key;
+            root.right = deleteNodeWithTwoChildrenRec(root.right, successor.key);
+        }
+
+        return root;
+    }
+
+    private TreeNode findSuccessor(TreeNode root) {
+        if (root.left == null) {
+            return root;
+        }
+        return findSuccessor(root.left);
     }
 
     public void preorder() {
