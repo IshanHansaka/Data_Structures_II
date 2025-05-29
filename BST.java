@@ -6,21 +6,27 @@ class Main {
 
         BinarySearchTree bst = new BinarySearchTree();
 
-        bst.insert(4);
-        bst.insert(6);
-        bst.insert(5);
+        bst.insert(20);
         bst.insert(8);
-        bst.insert(2);
-        bst.insert(9);
+        bst.insert(22);
+        bst.insert(4);
+        bst.insert(12);
+        bst.insert(10);
+        bst.insert(14);
+        bst.insert(1);
+        bst.insert(25);
+        bst.insert(21);
 
         bst.preorder();
         bst.inorder();
         bst.postorder();
         bst.levelorder();
 
-        bst.search(1);
-        bst.delete(1);
-        bst.search(1);
+        bst.search(20);
+        bst.delete(20);
+        bst.search(20);
+
+        // bst.LCA(21, 25);
     }
 }
 
@@ -168,6 +174,24 @@ class BinarySearchTree {
         System.out.println();
     }
 
+    public void LCA(int data1, int data2) {
+        TreeNode lca = findLCA(root, data1, data2);
+        System.out.println("Lowest Common Ancestor : " + lca.key);
+    }
+
+    public TreeNode findLCA(TreeNode root, int n1, int n2) {
+        if (root == null) {
+            return null;
+        }
+
+        if (n1 < root.key && n2 < root.key) {
+            return findLCA(root.left, n1, n2);
+        } else if (n1 > root.key && n2 > root.key) {
+            return findLCA(root.right, n1, n2);
+        }
+
+        return root;
+    }
 }
 
 class TreeNode {
